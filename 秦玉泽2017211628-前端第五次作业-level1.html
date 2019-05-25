@@ -1,152 +1,128 @@
 <!DOCTYPE html>
 <html>
 <head>
-<meta charset="utf-8">
-<script>
-	var i=0;
-	var j=0;
-	var k=0;
-function loadXMLDocAdd()
-{    
-	if (i+1>10)
-	{
-           alert("不能继续下翻了");
-	}else{
-		i++;
-	var xmlhttp;
-	if (window.XMLHttpRequest)
-	{
-		
-		xmlhttp=new XMLHttpRequest();
-	}
-	else
-	{
-		
-		xmlhttp=new ActiveXObject("Microsoft.XMLHTTP");
-	}
-	xmlhttp.onreadystatechange=function()
-	{
-		if (xmlhttp.readyState==4 && xmlhttp.status==200)
-		{
-			var json=JSON.parse(xmlhttp.responseText);
-
-			  	var father=document.getElementById("table");
-				for (k=father.childNodes.length-1;k>=2;k--)
-             {
-             	father.removeChild(father.childNodes[k]);
-             }
-			for (j=0;j<json.result.length;j++)
+	<meta charset="utf-8">
+	<script>
+		var page=0;
+		function loadXMLDocAdd()
+		{    
+			if (page+1>10)
 			{
-                  
-             var tr=document.createElement("tr");
-             var td1=document.createElement("td");
-             var td2=document.createElement("td");
-             var td3=document.createElement("td");
-             var td4=document.createElement("td");
-             var td5=document.createElement("td");
-			td1.innerHTML=json.result[j].class_num;
-			td2.innerHTML=json.result[j].gender;
-		    td3.innerHTML=json.result[j].major;
-			td4.innerHTML=json.result[j].name;
-			td5.innerHTML=json.result[j].student_num;
-			tr.appendChild(td1);
-			tr.appendChild(td2);
-			tr.appendChild(td3);
-			tr.appendChild(td4);
-			tr.appendChild(td5);
-			
-			father.appendChild(tr);
+				alert("不能继续下翻了");
+			}else{
+				page++;
+				var xmlhttp;
+				if (window.XMLHttpRequest)
+				{
+
+					xmlhttp=new XMLHttpRequest();
+				}
+				else
+				{
+
+					xmlhttp=new ActiveXObject("Microsoft.XMLHTTP");
+				}
+				xmlhttp.onreadystatechange=function()
+				{
+					if (xmlhttp.readyState==4 && xmlhttp.status==200)
+					{
+						var json=JSON.parse(xmlhttp.responseText);
+						var father=document.getElementById("table");
+						for (var k=father.childNodes.length-1;k>=2;k--)
+						{
+							father.removeChild(father.childNodes[k]);
+						}
+						for (var j=0;j<json.result.length;j++)
+						{
+
+							var tr=document.createElement("tr");
+							for (let shuxing in json.result[j]){
+								console.log(json.result[j][shuxing]);
+								var td=document.createElement("td");
+								td.textContent=json.result[j][shuxing];
+								tr.appendChild(td);
+							}
+							father.appendChild(tr);
+						}
+
+						document.getElementById("page").textContent="当前是第"+page+"页";
+					}
+				}
+
+				xmlhttp.open("GET","https://api.tumiv.com/v2/cqupt/student?page="+page+"&year=2015",true);
+				xmlhttp.send();
 			}
-			
-			document.getElementById("page").innerHTML="当前是第"+i+"页";
 		}
-	}
-		
-	xmlhttp.open("GET","https://api.tumiv.com/v2/cqupt/student?page="+i+"&year=2015",true);
-	xmlhttp.send();
-    }
-}
 
 
-function loadXMLDocReduce()
-{
-	if (i-1<1)
-	{
-		alert("不能继续上翻了");
-	}
-	else {
-		i--;
-	var xmlhttp;
-	if (window.XMLHttpRequest)
-	{
-		
-		xmlhttp=new XMLHttpRequest();
-	}
-	else
-	{
-		
-		xmlhttp=new ActiveXObject("Microsoft.XMLHTTP");
-	}
-	xmlhttp.onreadystatechange=function()
-	{
-		if (xmlhttp.readyState==4 && xmlhttp.status==200)
+		function loadXMLDocReduce()
 		{
-			var json=JSON.parse(xmlhttp.responseText);
-		   var father=document.getElementById("table");
-             for (k=father.childNodes.length-1;k>=2;k--)
-             {
-             	father.removeChild(father.childNodes[k]);
-             }
-
-		for (j=0;j<json.result.length;j++)
+			if (page-1<1)
 			{
-            
-             var tr=document.createElement("tr");
-             var td1=document.createElement("td");
-             var td2=document.createElement("td");
-             var td3=document.createElement("td");
-             var td4=document.createElement("td");
-             var td5=document.createElement("td");
-			td1.innerHTML=json.result[j].class_num;
-			td2.innerHTML=json.result[j].gender;
-		    td3.innerHTML=json.result[j].major;
-			td4.innerHTML=json.result[j].name;
-			td5.innerHTML=json.result[j].student_num;
-			tr.appendChild(td1);
-			tr.appendChild(td2);
-			tr.appendChild(td3);
-			tr.appendChild(td4);
-			tr.appendChild(td5);
-			
-			father.appendChild(tr);
+				alert("不能继续上翻了");
 			}
-			document.getElementById("page").innerHTML="当前是第"+i+"页";
+			else {
+				page--;
+				var xmlhttp;
+				if (window.XMLHttpRequest)
+				{
+
+					xmlhttp=new XMLHttpRequest();
+				}
+				else
+				{
+
+					xmlhttp=new ActiveXObject("Microsoft.XMLHTTP");
+				}
+				xmlhttp.onreadystatechange=function()
+				{
+					if (xmlhttp.readyState==4 && xmlhttp.status==200)
+					{
+						var json=JSON.parse(xmlhttp.responseText);
+						var father=document.getElementById("table");
+						for (var k=father.childNodes.length-1;k>=2;k--)
+						{
+							father.removeChild(father.childNodes[k]);
+						}
+
+						for (var j=0;j<json.result.length;j++)
+						{
+							var tr=document.createElement("tr");
+							for (let shuxing in json.result[j]){
+								console.log(json.result[j][shuxing]);
+								var td=document.createElement("td");
+								td.textContent=json.result[j][shuxing];
+								tr.appendChild(td);
+							}
+							father.appendChild(tr);
+						}
+						document.getElementById("page").textContent="当前是第"+page+"页";
+					}
+				}
+				xmlhttp.open("GET","https://api.tumiv.com/v2/cqupt/student?page="+page+"&year=2015",true);
+				xmlhttp.send();
+
+			}
 		}
-	}
-	xmlhttp.open("GET","https://api.tumiv.com/v2/cqupt/student?page="+i+"&year=2015",true);
-	xmlhttp.send();
-	
-}
-}
-</script>
+	</script>
 </head>
 <body>
 
 
-<button type="button" onclick="loadXMLDocReduce()">查看上一页</button>
-<button type="button" onclick="loadXMLDocAdd()">查看下一页</button>
-<div id="myDiv"></div>
-<table id="table" border="2">
-<tr>
-  <td>班级</td>
-  <td>性别</td>
-  <td>专业</td>
-  <td>姓名</td>
-  <td>学号</td>
-</tr>
+	<button type="button" onclick="loadXMLDocReduce()">查看上一页</button>
+	<button type="button" onclick="loadXMLDocAdd()">查看下一页</button>
+	<div id="myDiv"></div>
+	<table id="table" border="2">
+		<tr>
+			<td>班级</td>
+			<td>性别</td>
+			<td>专业</td>
+			<td>姓名</td>
+			<td>学号</td>
+		</tr>
 
-</table>
-<div id="page"></div>
+	</table>
+	<div id="page"></div>
 
 </body>
 </html>
